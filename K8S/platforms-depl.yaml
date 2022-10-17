@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: platformservice
-          image: spop1987/platformservice-v1:latest
+          image: spop1987/platformservice-v2:latest
