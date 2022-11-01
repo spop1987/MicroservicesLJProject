@@ -34,7 +34,8 @@ namespace CommandsService.Data
 
         public bool ExternalPlatformExists(int externalPlatformId)
         {
-            return _context.Platforms.Any(p => p.ExternalId == externalPlatformId);
+            return _context.Platforms
+            .Any(p => p.ExternalId == externalPlatformId);
         }
 
         public IEnumerable<Platform> GetAllPlatforms()
@@ -44,18 +45,27 @@ namespace CommandsService.Data
 
         public Command GetCommand(int platformId, int commandId)
         {
-            return _context.Commands?
-            .Where(c => c.PlatformId == platformId && c.Id == commandId).FirstOrDefault();
+            var commandInDb = _context.Commands
+            .Where(c => c.PlatformId == platformId && c.Id == commandId)
+            .FirstOrDefault();
+
+            if(commandInDb == null)
+                throw new Exception("Command not found in database");
+            
+            return commandInDb;
         }
 
         public IEnumerable<Command> GetCommandsForPlatform(int platformId)
         {
-            return _context.Commands.Where(c => c.PlatformId == platformId).OrderBy(c => c.Platform.Name);
+            return _context.Commands
+            .Where(c => c.PlatformId == platformId)
+            .OrderBy(c => c.Platform.Name);
         }
 
         public bool PlatformExists(int platformId)
         {
-            return _context.Platforms.Any(p => p.Id == platformId);
+            return _context.Platforms
+            .Any(p => p.Id == platformId);
         }
 
         public bool SaveChanges()

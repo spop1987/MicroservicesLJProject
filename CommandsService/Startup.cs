@@ -1,5 +1,6 @@
 
 using CommandsService.Data;
+using CommandsService.EventProcessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -17,8 +18,11 @@ namespace CommandsService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMen"));
+            services.AddScoped<ICommandRepo, CommandRepo>();
 
             services.AddControllers();
+            services.AddSingleton<IEventProcessor, EventProcessor>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c => 
             {
