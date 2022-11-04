@@ -1,4 +1,5 @@
 
+using CommandsService.AsyncDataServices;
 using CommandsService.Data;
 using CommandsService.EventProcessing;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace CommandsService
             services.AddScoped<ICommandRepo, CommandRepo>();
 
             services.AddControllers();
+            services.AddHostedService<MessageBusSubscriber>();
             services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
